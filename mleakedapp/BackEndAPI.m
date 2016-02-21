@@ -35,12 +35,15 @@
     // POST
     if ([restOperation isEqualToString:@"POST"]) {
         
+        NSError *error;
         NSURLSession *session = [NSURLSession sessionWithConfiguration: sessionConfig ];
         
         // Create the request
         __block NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: url ] ];
         [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"] ;
         request.HTTPMethod = @"POST";
+        NSData *postData = [NSJSONSerialization dataWithJSONObject: parameters options: 0 error:&error];
+        [request setHTTPBody:postData];
 
         // Perform operation
         NSURLSessionDataTask * task = [session dataTaskWithRequest: request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
